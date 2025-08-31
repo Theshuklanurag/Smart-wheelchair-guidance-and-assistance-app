@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wheelchair Checkout</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f7fdf6;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .container {
+      max-width: 600px;
+      width: 100%;
+      background: #fff;
+      padding: 40px;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      animation: fadeIn 0.5s ease-out;
+      position: relative;
+    }
+    h1 {
+      text-align: center;
+      color: #4CAF50;
+      margin-bottom: 30px;
+      font-weight: 600;
+    }
+    .form-group { margin-bottom: 20px; }
+    label { display: block; margin-bottom: 8px; color: #555; font-weight: 600; }
+    input, select, textarea {
+      width: 100%;
+      padding: 12px 15px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      box-sizing: border-box;
+      transition: border-color 0.3s;
+      font-family: 'Poppins', sans-serif;
+    }
+    input:focus, select:focus, textarea:focus {
+        border-color: #4CAF50;
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
+    }
+    textarea { resize: vertical; }
+    .radio-group { display: flex; gap: 20px; justify-content: center; margin-top: 10px; }
+    .radio-group label {
+      display: flex; align-items: center; gap: 8px; cursor: pointer;
+      padding: 10px 15px; border: 1px solid #ccc; border-radius: 8px;
+      transition: border-color 0.3s, background-color 0.3s;
+    }
+     .radio-group input[type="radio"] { display: none; }
+    .radio-group input[type="radio"]:checked + label {
+      border-color: #4CAF50; background-color: #f1f8e9; font-weight: 600;
+    }
+    .total {
+      text-align: center; font-size: 1.5rem; margin: 30px 0;
+      color: #333; font-weight: 600;
+    }
+    .btn {
+      display: block; width: 100%; padding: 15px;
+      background: linear-gradient(90deg, #4CAF50, #388E3C);
+      color: white; text-align: center; border: none; border-radius: 8px;
+      cursor: pointer; font-size: 1.1rem; font-weight: 600;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .btn:hover { transform: translateY(-3px); box-shadow: 0 6px 12px rgba(0,0,0,0.15); }
+    .home-button {
+        position: absolute; top: 25px; left: 25px; font-size: 1.5rem;
+        color: #aaa; text-decoration: none; transition: color 0.3s;
+    }
+    .home-button:hover { color: #4CAF50; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <a href="./wheelchair.html" class="home-button"><i class="fas fa-arrow-left"></i></a>
+    <h1><i class="fas fa-shopping-cart"></i> Wheelchair Checkout</h1>
+    <form id="checkoutForm">
+      <div class="form-group">
+        <label>Select Wheelchair Type:</label>
+        <div class="radio-group">
+          <input type="radio" id="electric" name="wheelchairType" value="electric" onclick="updatePrice()" checked>
+          <label for="electric">Electric (₹50,000)</label>
+          <input type="radio" id="manual" name="wheelchairType" value="manual" onclick="updatePrice()">
+          <label for="manual">Manual (₹10,000)</label>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="name">Full Name:</label>
+        <input type="text" id="name" name="name" required>
+      </div>
+      <div class="form-group">
+        <label for="email">Email Address:</label>
+        <input type="email" id="email" name="email" required>
+      </div>
+      <div class="form-group">
+        <label for="phone">Phone Number:</label>
+        <input type="tel" id="phone" name="phone" required>
+      </div>
+      <div class="form-group">
+        <label for="address">Shipping Address:</label>
+        <textarea id="address" name="address" rows="4" required></textarea>
+      </div>
+      <div class="form-group">
+        <label for="paymentMethod">Select Payment Method:</label>
+        <select id="paymentMethod" name="paymentMethod" required>
+          <option value="card">Credit/Debit Card</option>
+          <option value="paypal">PayPal</option>
+          <option value="upi">UPI</option>
+        </select>
+      </div>
+      <div class="total" id="totalPrice">Total: ₹50,000</div>
+      <button type="submit" class="btn">Place Order</button>
+    </form>
+  </div>
+  <script>
+    function updatePrice() {
+      const selected = document.querySelector('input[name="wheelchairType"]:checked').value;
+      const total = document.getElementById('totalPrice');
+      total.textContent = selected === 'electric' ? 'Total: ₹50,000' : 'Total: ₹10,000';
+    }
+    document.getElementById('checkoutForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      alert('Thank you for your order! Redirecting to the homepage...');
+      window.location.href = './index.html';
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f7fdf6;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: #fff;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #4CAF50, #81C784);
+            padding: 40px;
+            text-align: center;
+            color: white;
+            position: relative;
+        }
+        .profile-pic-container {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            margin: 0 auto 10px;
+            border: 5px solid white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        .profile-pic {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        .upload-button {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            background-color: #fff;
+            color: #4CAF50;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .upload-button:hover { background-color: #4CAF50; color: #fff; }
+        #profile-pic-input { display: none; }
+        .header h1 { margin: 0; font-size: 1.8rem; font-weight: 600; }
+        .form-container { padding: 30px 40px; }
+        .form-section { margin-bottom: 20px; }
+        .form-section label {
+            display: block; margin-bottom: 8px; font-weight: 600; color: #555;
+        }
+        .form-section input, .form-section textarea {
+            width: 100%; padding: 12px; border: 1px solid #ccc;
+            border-radius: 8px; box-sizing: border-box; font-family: 'Poppins', sans-serif;
+            transition: all 0.3s;
+        }
+        .form-section input:focus, .form-section textarea:focus {
+            border-color: #4CAF50; box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2); outline: none;
+        }
+        .submit-button {
+            display: block; width: 100%; padding: 15px;
+            background: linear-gradient(90deg, #4CAF50, #388E3C);
+            color: white; border: none; border-radius: 8px; cursor: pointer;
+            font-size: 1.1rem; font-weight: 600; text-decoration: none; text-align: center;
+            transition: transform 0.2s, box-shadow 0.2s; margin-top: 20px;
+        }
+        .submit-button:hover { transform: translateY(-3px); box-shadow: 0 6px 12px rgba(0,0,0,0.15); }
+        .notification {
+            display: none; background: #dff0d8; color: #3c763d; padding: 15px;
+            border-radius: 8px; margin-top: 20px; text-align: center;
+        }
+        .home-button {
+            position: absolute; top: 20px; left: 20px; font-size: 1.5rem;
+            color: white; text-decoration: none; transition: transform 0.3s;
+        }
+        .home-button:hover { transform: scale(1.1); }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="./index.html" class="home-button"><i class="fas fa-arrow-left"></i></a>
+            <div class="profile-pic-container">
+                <img src="https://i.pinimg.com/736x/57/00/c0/5700c04197ee9a4372a35ef16eb78f4e.jpg" alt="Profile Picture" class="profile-pic" id="profile-pic-preview">
+                <input type="file" id="profile-pic-input" accept="image/*" onchange="previewImage(event)">
+                <label for="profile-pic-input" class="upload-button"><i class="fas fa-camera"></i></label>
+            </div>
+            <h1>Your Profile</h1>
+        </div>
+        <div class="form-container">
+            <form onsubmit="handleSubmit(event)">
+                <div class="form-section">
+                    <label for="name">Your Name:</label>
+                    <input type="text" id="name" name="name" required placeholder="e.g., John Doe">
+                </div>
+                <div class="form-section">
+                    <label for="contact">Contact Number:</label>
+                    <input type="tel" id="contact" name="contact" required placeholder="e.g., +91 12345 67890">
+                </div>
+                <div class="form-section">
+                    <label for="email">Email Address:</label>
+                    <input type="email" id="email" name="email" required placeholder="e.g., john.doe@example.com">
+                </div>
+                <div class="form-section">
+                    <label for="disability-type">Type of Disability (Optional):</label>
+                    <input type="text" id="disability-type" name="disability-type" placeholder="e.g., Paraplegia">
+                </div>
+                <div class="form-section">
+                    <label for="bio">Short Bio:</label>
+                    <textarea id="bio" name="bio" rows="4" required placeholder="Tell us a little about yourself..."></textarea>
+                </div>
+                <button type="submit" class="submit-button">Save Changes</button>
+            </form>
+            <div id="notification" class="notification">
+                <p>Profile updated successfully! Redirecting home...</p>
+            </div>
+        </div>
+    </div>
+    <script>
+        function previewImage(event) {
+            if (event.target.files && event.target.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(){
+                    const output = document.getElementById('profile-pic-preview');
+                    output.src = reader.result;
+                };
+                reader.readAsDataURL(event.target.files[0]);
+            }
+        }
+        function handleSubmit(event) {
+            event.preventDefault();
+            document.getElementById('notification').style.display = 'block';
+            setTimeout(() => {
+                window.location.href = './index.html';
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

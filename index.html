@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Wheelaid - Your Mobility Companion</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+      :root {
+        --primary-color: #4CAF50;
+        --primary-dark: #388E3C;
+        --secondary-color: #333;
+        --background-color: #f7fdf6;
+        --text-color: #444;
+        --card-bg: #ffffff;
+        --light-gray: #f4f4f4;
+      }
+      body {
+        font-family: 'Poppins', sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: var(--background-color);
+        color: var(--text-color);
+        overflow-x: hidden;
+      }
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: white;
+        padding: 15px 40px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+      }
+      .navbar h1 {
+        color: var(--primary-dark);
+        font-size: 2rem;
+        font-weight: 700;
+        margin: 0;
+        display: flex;
+        align-items: center;
+      }
+      .navbar h1 i {
+        margin-right: 10px;
+        color: var(--primary-color);
+      }
+      .nav-links a {
+        color: var(--secondary-color);
+        text-decoration: none;
+        margin: 0 15px;
+        font-weight: 600;
+        padding: 8px 15px;
+        border-radius: 20px;
+        transition: background-color 0.3s, color 0.3s;
+      }
+      .nav-links a:hover, .nav-links a.active {
+        background-color: var(--primary-color);
+        color: white;
+      }
+       .nav-links .profile-img {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border: 2px solid var(--primary-color);
+        vertical-align: middle;
+        transition: transform 0.3s;
+      }
+       .nav-links .profile-img:hover {
+        transform: scale(1.1);
+      }
+      .hero {
+        background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1599052891335-3fed93a555a3?q=80&w=2070&auto=format&fit=crop') no-repeat center center;
+        background-size: cover;
+        color: white;
+        text-align: center;
+        padding: 120px 20px;
+      }
+      .hero h2 { font-size: 3.5rem; font-weight: 700; margin: 0; animation: fadeInUp 1s ease-out; }
+      .hero p { font-size: 1.3rem; max-width: 700px; margin: 20px auto 30px; animation: fadeInUp 1s ease-out 0.3s; }
+      .hero .cta-button {
+        background-color: var(--primary-color); color: white; padding: 15px 35px;
+        text-decoration: none; font-weight: 600; font-size: 1.1rem; border-radius: 30px;
+        transition: all 0.3s; box-shadow: 0 5px 15px rgba(0,0,0,0.2); animation: fadeInUp 1s ease-out 0.6s;
+      }
+      .hero .cta-button:hover {
+        background-color: var(--primary-dark); transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+      }
+      .section { padding: 80px 40px; }
+      .section-title {
+        text-align: center; font-size: 2.5rem; font-weight: 700; color: var(--secondary-color);
+        margin-bottom: 50px; position: relative;
+      }
+      .section-title::after {
+        content: ''; width: 80px; height: 4px; background-color: var(--primary-color);
+        border-radius: 2px; position: absolute; bottom: -15px; left: 50%;
+        transform: translateX(-50%);
+      }
+      .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 40px;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+      .feature-card {
+        background: var(--card-bg);
+        border-radius: 15px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.07);
+        text-align: center;
+        padding: 40px 30px;
+        transition: transform 0.3s, box-shadow 0.3s;
+        cursor: pointer;
+      }
+      .feature-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
+      }
+      .feature-card .icon {
+        font-size: 3.5rem;
+        color: var(--primary-color);
+        margin-bottom: 20px;
+      }
+      .feature-card h3 {
+        font-size: 1.5rem;
+        margin-bottom: 15px;
+      }
+      .feature-card p {
+        line-height: 1.7;
+        color: #666;
+      }
+      .how-it-works {
+        background-color: var(--light-gray);
+      }
+      .steps-container {
+        display: flex;
+        justify-content: space-around;
+        max-width: 1200px;
+        margin: 0 auto;
+        gap: 30px;
+        flex-wrap: wrap;
+      }
+      .step-card {
+        text-align: center;
+        max-width: 300px;
+      }
+      .step-card .icon {
+        background-color: var(--primary-color);
+        color: white;
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2.5rem;
+        margin: 0 auto 20px;
+        box-shadow: 0 5px 10px rgba(76, 175, 80, 0.4);
+      }
+      .step-card h3 {
+        font-size: 1.4rem;
+        margin-bottom: 10px;
+      }
+      .slideshow-container {
+        max-width: 900px;
+        position: relative;
+        margin: 0 auto;
+        background: var(--card-bg);
+        border-radius: 15px;
+        padding: 50px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+      }
+      .mySlides {
+        display: none;
+        text-align: center;
+        animation: fade 1.5s;
+      }
+      .mySlides img {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        margin-bottom: 20px;
+        object-fit: cover;
+      }
+      .mySlides p.quote {
+        font-size: 1.2rem;
+        font-style: italic;
+        color: #555;
+        max-width: 700px;
+        margin: 0 auto 20px;
+        line-height: 1.8;
+      }
+      .mySlides p.author {
+        font-weight: 700;
+        font-size: 1.1rem;
+        color: var(--primary-dark);
+      }
+      .dot-container {
+        text-align: center;
+        padding-top: 30px;
+      }
+      .dot {
+        cursor: pointer;
+        height: 12px;
+        width: 12px;
+        margin: 0 5px;
+        background-color: #ccc;
+        border-radius: 50%;
+        display: inline-block;
+        transition: background-color 0.6s ease;
+      }
+      .active, .dot:hover { background-color: var(--primary-color); }
+      #about-us-section {
+        display: none;
+      }
+      .chat-icon {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 60px;
+        height: 60px;
+        font-size: 28px;
+        cursor: pointer;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        animation: pulse 2s infinite;
+      }
+      .chat-icon:hover { animation: none; }
+      .footer {
+        background-color: var(--secondary-color);
+        color: white;
+        padding: 50px 20px;
+        text-align: center;
+      }
+      .footer .social-icons { margin-bottom: 20px; }
+      .footer .social-icons a {
+        margin: 0 15px;
+        text-decoration: none;
+        font-size: 1.8rem;
+        color: white;
+        transition: color 0.3s, transform 0.3s;
+      }
+      .footer .social-icons a:hover {
+        color: var(--primary-color);
+        transform: translateY(-3px);
+      }
+      @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+      @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7); } 70% { box-shadow: 0 0 0 20px rgba(76, 175, 80, 0); } 100% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0); } }
+      @keyframes fade { from {opacity: .4} to {opacity: 1} }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar">
+        <h1><i class="fas fa-wheelchair"></i>WHEELAID</h1>
+        <div class="nav-links">
+            <a href="index.html" class="active">Home</a>
+            <a href="#about-us-section" onclick="toggleAboutUs()">About</a>
+            <a href="./contact.html">Contact</a>
+            <a href="./login.html">Sign In</a>
+            <a href="./profile.html">
+               <img src="https://i.pinimg.com/736x/57/00/c0/5700c04197ee9a4372a35ef16eb78f4e.jpg" alt="Profile" class="profile-img">
+            </a>
+        </div>
+    </nav>
+    <header class="hero">
+        <h2 class="animate-on-scroll">Navigate Your World with Confidence</h2>
+        <p class="animate-on-scroll">The ultimate mobility and accessibility app for wheelchair users. Discover accessible routes, find nearby facilities, and connect with a supportive community.</p>
+        <a href="#features" class="cta-button animate-on-scroll">Explore Features</a>
+    </header>
+    <main>
+        <section id="features" class="section">
+            <h2 class="section-title">Everything You Need in One App</h2>
+            <div class="features-grid">
+                <div class="feature-card animate-on-scroll" onclick="window.location.href='./maps.html?query=accessible+places'">
+                    <div class="icon"><i class="fas fa-map-marked-alt"></i></div>
+                    <h3>Smart Navigation</h3>
+                    <p>Find the safest and most accessible routes, avoiding stairs, steep slopes, and other obstacles in real-time.</p>
+                </div>
+                <div class="feature-card animate-on-scroll" onclick="window.location.href='./maps.html?query=hospital'">
+                    <div class="icon"><i class="fas fa-hospital"></i></div>
+                    <h3>Facility Finder</h3>
+                    <p>Quickly locate nearby accessible hospitals, restrooms, parking, and other essential amenities.</p>
+                </div>
+                <div class="feature-card animate-on-scroll" onclick="window.location.href='./wheelchair.html'">
+                    <div class="icon"><i class="fas fa-store"></i></div>
+                    <h3>Wheelchair Shops</h3>
+                    <p>Browse and connect with local shops for wheelchair purchases, rentals, and repair services.</p>
+                </div>
+                <div class="feature-card animate-on-scroll" onclick="window.location.href='./help.html'">
+                    <div class="icon"><i class="fas fa-hands-helping"></i></div>
+                    <h3>Community Support</h3>
+                    <p>Join our community to share tips, ask questions, and connect with fellow wheelchair users.</p>
+                </div>
+            </div>
+        </section>
+        <section class="section how-it-works">
+            <h2 class="section-title">How It Works</h2>
+            <div class="steps-container">
+                <div class="step-card animate-on-scroll">
+                    <div class="icon">1</div>
+                    <h3>Enter Destination</h3>
+                    <p>Simply type in where you want to go, and let our smart algorithm do the rest.</p>
+                </div>
+                <div class="step-card animate-on-scroll">
+                    <div class="icon">2</div>
+                    <h3>Get Accessible Route</h3>
+                    <p>We provide a step-by-step, wheelchair-friendly route, customized for your needs.</p>
+                </div>
+                <div class="step-card animate-on-scroll">
+                    <div class="icon">3</div>
+                    <h3>Travel with Ease</h3>
+                    <p>Navigate confidently with real-time guidance and updates on your journey.</p>
+                </div>
+            </div>
+        </section>
+        <section class="section">
+            <h2 class="section-title">What Our Users Say</h2>
+            <div class="slideshow-container">
+                <div class="mySlides">
+                    <img src="https://images.unsplash.com/photo-1557862921-37829c790f19?q=80&w=2071&auto=format&fit=crop" alt="User 1">
+                    <p class="quote">"Wheelaid has been a game-changer for my independence. I can finally explore my city without worrying about accessibility issues. The facility finder is a lifesaver!"</p>
+                    <p class="author">- Alex Johnson</p>
+                </div>
+                <div class="mySlides">
+                     <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=1887&auto=format&fit=crop" alt="User 2">
+                    <p class="quote">"The community feature is incredible. It's so empowering to connect with others who understand the daily challenges and triumphs of being a wheelchair user."</p>
+                    <p class="author">- Maria Garcia</p>
+                </div>
+                <div class="mySlides">
+                    <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=1887&auto=format&fit=crop" alt="User 3">
+                    <p class="quote">"I travel a lot for work, and this app is the first thing I open in a new city. The real-time route planning is incredibly accurate and reliable. Highly recommended!"</p>
+                    <p class="author">- David Chen</p>
+                </div>
+                <div class="dot-container">
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                </div>
+            </div>
+        </section>
+        <section id="about-us-section" class="section" style="background-color: var(--light-gray); display: none;">
+            <h2 class="section-title">About Us</h2>
+            <p style="max-width: 900px; margin: 0 auto; text-align: center; line-height: 1.8;">
+              The Wheelaid App is designed to enhance mobility, accessibility, and independence for wheelchair users. Using GPS navigation and real-time data, the app provides accessible routes, locates wheelchair-friendly amenities, and promotes user engagement through feedback. It addresses challenges like limited accessibility information while advocating for inclusivity. We are constantly working to improve, positioning ourselves as a transformative tool for a more inclusive society.
+            </p>
+        </section>
+      <button class="chat-icon" onclick="openChatbox()">
+        <i class="fas fa-comment-dots"></i>
+      </button>
+    </main>
+    <footer class="footer">
+        <div class="social-icons">
+            <a href="mailto:info@wheelaid.com" aria-label="Email"><i class="fas fa-envelope"></i></a>
+            <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+            <a href="#" aria-label="Github"><i class="fab fa-github"></i></a>
+        </div>
+        <p>&copy; 2025 WHEELAID. All Rights Reserved.</p>
+    </footer>
+    <script src="script.js"></script>
+    <script>
+      function toggleAboutUs() {
+        const aboutSection = document.getElementById("about-us-section");
+        if (aboutSection.style.display === "block") {
+            aboutSection.style.display = "none";
+        } else {
+            aboutSection.style.display = "block";
+            aboutSection.scrollIntoView({ behavior: 'smooth' });
+        }
+      }
+      function openChatbox() {
+        window.location.href = "./chat.html";
+      }
+    </script>
+  </body>
+</html>
+

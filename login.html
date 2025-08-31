@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Wheelaid</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #81C784, #4CAF50);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .form-container {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            position: relative;
+            animation: slideIn 0.6s ease-out;
+        }
+        .home-button {
+            position: absolute; top: 20px; left: 20px; font-size: 1.5rem;
+            color: #aaa; text-decoration: none; transition: color 0.3s;
+        }
+        .home-button:hover { color: #4CAF50; }
+        h2 {
+            margin-bottom: 30px; color: #333;
+            font-weight: 600; font-size: 2rem;
+        }
+        .input-group { margin-bottom: 20px; position: relative; }
+        .input-group i {
+            position: absolute; left: 15px; top: 50%;
+            transform: translateY(-50%); color: #aaa;
+        }
+        input, select {
+            width: 100%; padding: 12px 15px 12px 45px; border-radius: 8px;
+            border: 1px solid #ccc; box-sizing: border-box;
+            font-family: 'Poppins', sans-serif; transition: all 0.3s;
+        }
+        input:focus, select:focus {
+            border-color: #4CAF50;
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
+            outline: none;
+        }
+        select { padding-left: 15px; }
+        button {
+            width: 100%; padding: 15px;
+            background: linear-gradient(90deg, #4CAF50, #388E3C);
+            color: white; border: none; border-radius: 8px; cursor: pointer;
+            font-size: 1.1rem; font-weight: 600;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 10px;
+        }
+        button:hover { transform: translateY(-3px); box-shadow: 0 6px 12px rgba(0,0,0,0.15); }
+        p { margin-top: 20px; color: #666; }
+        p a { color: #4CAF50; text-decoration: none; font-weight: 600; }
+        p a:hover { text-decoration: underline; }
+        .error {
+            color: #D32F2F; font-size: 0.9rem; text-align: left;
+            margin-top: 5px; display: none;
+        }
+        @keyframes slideIn { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <a href="./index.html" class="home-button"><i class="fas fa-arrow-left"></i></a>
+        <h2>Welcome Back</h2>
+        <form id="login-form" onsubmit="handleLogin(event)">
+            <div class="input-group">
+                 <select id="user-type" name="user-type">
+                    <option value="patient">Login as Patient</option>
+                    <option value="admin">Login as Administrator</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <i class="fas fa-envelope"></i>
+                <input type="email" id="email" name="email" placeholder="Email Address" required>
+            </div>
+            <div id="error" class="error">Please enter a valid email address.</div>
+            <div class="input-group">
+                 <i class="fas fa-lock"></i>
+                <input type="password" id="password" name="password" placeholder="Password" required>
+            </div>
+            <button type="submit">Login</button>
+        </form>
+        <p>First time here? <a href="#">Sign Up</a></p>
+    </div>
+    <script>
+        function validateEmail() {
+            const email = document.getElementById('email').value;
+            const error = document.getElementById('error');
+            const pattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+            if (!pattern.test(email)) {
+                error.style.display = 'block';
+                return false;
+            }
+            error.style.display = 'none';
+            return true;
+        }
+        function handleLogin(event) {
+            event.preventDefault();
+            if (validateEmail()) {
+                alert('Login successful! Redirecting...');
+                window.location.href = './index.html';
+            }
+        }
+    </script>
+</body>
+</html>

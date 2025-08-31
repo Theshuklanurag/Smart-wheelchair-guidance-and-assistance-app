@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wheelchair Shop</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #4CAF50;
+            --secondary-color: #333;
+            --background-color: #f7fdf6;
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--background-color);
+        }
+        .header {
+            background: linear-gradient(120deg, var(--primary-color), #66BB6A);
+            color: white;
+            padding: 80px 20px;
+            text-align: center;
+            position: relative;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 3.5rem;
+            font-weight: 700;
+        }
+        .header p {
+            font-size: 1.3rem;
+            opacity: 0.9;
+        }
+         .home-button {
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            color: white;
+            font-size: 1.8rem;
+            text-decoration: none;
+            transition: transform 0.3s;
+        }
+        .home-button:hover {
+            transform: scale(1.1);
+        }
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: stretch;
+            gap: 50px;
+            padding: 80px 20px;
+            flex-wrap: wrap;
+        }
+        .card {
+            background: #fff;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            width: 350px;
+            text-align: center;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.3s, box-shadow 0.3s;
+            animation: popIn 0.5s ease-out forwards;
+        }
+        .card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+        .card:nth-child(2) { animation-delay: 0.2s; }
+        .card img {
+            max-width: 100%;
+            height: 220px;
+            object-fit: contain;
+            margin-bottom: 25px;
+        }
+        .card h2 {
+            color: var(--primary-color);
+            font-size: 2rem;
+            margin: 15px 0;
+        }
+        .card p {
+            color: #666;
+            font-size: 1.1rem;
+            line-height: 1.7;
+            margin-bottom: 30px;
+            flex-grow: 1;
+        }
+        .btn {
+            display: inline-block;
+            padding: 15px 40px;
+            background-color: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: background-color 0.3s, transform 0.3s;
+            box-shadow: 0 4px 10px rgba(76, 175, 80, 0.3);
+        }
+        .btn:hover {
+            background-color: #388E3C;
+            transform: scale(1.05);
+        }
+        @keyframes popIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="./index.html" class="home-button"><i class="fas fa-home"></i></a>
+        <h1>Wheelchair Shop</h1>
+        <p>Your one-stop destination for mobility solutions.</p>
+    </div>
+    <div class="container">
+        <div class="card">
+            <div>
+                <img src="https://i.pinimg.com/736x/2b/19/94/2b1994248b6a38622c745f4a8f95f458.jpg" alt="Wheelchair for Sale">
+                <h2>Buy a Wheelchair</h2>
+                <p>Own a brand new, high-quality wheelchair tailored to your comfort and lifestyle. A long-term investment in your mobility.</p>
+            </div>
+            <a href="./buy.html" class="btn">Explore Purchase Options</a>
+        </div>
+        <div class="card">
+            <div>
+                <img src="https://i.pinimg.com/736x/7d/53/74/7d53744a56c342a7d42fb2f2e7b5752c.jpg" alt="Wheelchair for Rent">
+                <h2>Rent a Wheelchair</h2>
+                <p>Need a temporary mobility solution? Rent a wheelchair for short-term use, travel, or recovery. Flexible and cost-effective.</p>
+            </div>
+            <a href="./RENT.HTML" class="btn">See Rental Plans</a>
+        </div>
+    </div>
+</body>
+</html>

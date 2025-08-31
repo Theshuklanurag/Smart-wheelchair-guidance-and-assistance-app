@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wheelchair Renting</title>
+   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f7fdf6;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .container {
+      max-width: 600px;
+      width: 100%;
+      background: #fff;
+      padding: 40px;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      animation: fadeIn 0.5s ease-out;
+      position: relative;
+    }
+    h1 {
+      text-align: center;
+      color: #4CAF50;
+      margin-bottom: 30px;
+      font-weight: 600;
+    }
+    .form-group { margin-bottom: 20px; }
+    label { display: block; margin-bottom: 8px; color: #555; font-weight: 600; }
+    input, select, textarea {
+      width: 100%;
+      padding: 12px 15px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      box-sizing: border-box;
+      transition: border-color 0.3s;
+      font-family: 'Poppins', sans-serif;
+    }
+    input:focus, select:focus, textarea:focus {
+        border-color: #4CAF50;
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
+    }
+    textarea { resize: vertical; }
+    .radio-group { display: flex; gap: 20px; justify-content: center; margin-top: 10px; }
+    .radio-group label {
+      display: flex; align-items: center; gap: 8px; cursor: pointer;
+      padding: 10px 15px; border: 1px solid #ccc; border-radius: 8px;
+      transition: border-color 0.3s, background-color 0.3s;
+    }
+    .radio-group input[type="radio"] { display: none; }
+    .radio-group input[type="radio"]:checked + label {
+      border-color: #4CAF50; background-color: #f1f8e9; font-weight: 600;
+    }
+    .total {
+      text-align: center; font-size: 1.5rem; margin: 30px 0;
+      color: #333; font-weight: 600;
+    }
+    .btn {
+      display: block; width: 100%; padding: 15px;
+      background: linear-gradient(90deg, #4CAF50, #388E3C);
+      color: white; text-align: center; border: none; border-radius: 8px;
+      cursor: pointer; font-size: 1.1rem; font-weight: 600;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .btn:hover { transform: translateY(-3px); box-shadow: 0 6px 12px rgba(0,0,0,0.15); }
+    .home-button {
+        position: absolute; top: 25px; left: 25px; font-size: 1.5rem;
+        color: #aaa; text-decoration: none; transition: color 0.3s;
+    }
+    .home-button:hover { color: #4CAF50; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <a href="./wheelchair.html" class="home-button"><i class="fas fa-arrow-left"></i></a>
+    <h1><i class="fas fa-stopwatch"></i> Wheelchair Renting</h1>
+    <form id="rentForm">
+      <div class="form-group">
+        <label>Select Wheelchair Type:</label>
+        <div class="radio-group">
+            <input type="radio" id="electric" name="wheelchairType" value="electric" onclick="updateRentPrice()" checked>
+            <label for="electric">Electric (₹100/hr)</label>
+            <input type="radio" id="manual" name="wheelchairType" value="manual" onclick="updateRentPrice()">
+            <label for="manual">Manual (₹50/hr)</label>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="hours">Enter Number of Hours:</label>
+        <input type="number" id="hours" name="hours" min="1" value="1" required oninput="updateRentPrice()">
+      </div>
+      <div class="form-group">
+        <label for="name">Full Name:</label>
+        <input type="text" id="name" name="name" required>
+      </div>
+      <div class="form-group">
+        <label for="email">Email Address:</label>
+        <input type="email" id="email" name="email" required>
+      </div>
+      <div class="form-group">
+        <label for="phone">Phone Number:</label>
+        <input type="tel" id="phone" name="phone" required>
+      </div>
+      <div class="form-group">
+        <label for="address">Rental Address:</label>
+        <textarea id="address" name="address" rows="4" required></textarea>
+      </div>
+      <div class="total" id="totalPrice">Total: ₹100</div>
+      <button type="submit" class="btn">Rent Now</button>
+    </form>
+  </div>
+  <script>
+    function updateRentPrice() {
+      const type = document.querySelector('input[name="wheelchairType"]:checked').value;
+      const hours = document.getElementById('hours').value || 1;
+      const price = type === 'electric' ? 100 : 50;
+      document.getElementById('totalPrice').textContent = 'Total: ₹' + (price * hours);
+    }
+    document.getElementById('rentForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      alert('Thank you for renting! Redirecting to the homepage...');
+      window.location.href = './index.html';
+    });
+  </script>
+</body>
+</html>

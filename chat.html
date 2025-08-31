@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat with Wheelaid AI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif; margin: 0; padding: 0; background-color: #f1f8e9;
+            display: flex; justify-content: center; align-items: center; height: 100vh;
+        }
+        .chatbox {
+            width: 95%; max-width: 450px; height: 90vh; max-height: 700px;
+            background-color: white; border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            display: flex; flex-direction: column; overflow: hidden;
+            animation: fadeInScaleUp 0.5s ease-in-out;
+        }
+        .chatbox-header {
+            background: linear-gradient(90deg, #4CAF50, #388E3C);
+            color: white; padding: 20px; text-align: center;
+            font-size: 1.4rem; font-weight: 600;
+            border-radius: 20px 20px 0 0; position: relative;
+        }
+        .chatbox-header .home-button {
+            position: absolute; left: 20px; top: 50%; transform: translateY(-50%);
+            color: white; text-decoration: none; font-size: 1.2rem; transition: transform 0.3s;
+        }
+        .chatbox-header .home-button:hover { transform: scale(1.1) translateY(-50%); }
+        .chatbox-messages {
+            flex: 1; padding: 20px; overflow-y: auto;
+            display: flex; flex-direction: column; gap: 15px;
+        }
+        .message {
+            padding: 12px 18px; border-radius: 18px; max-width: 80%;
+            line-height: 1.5; animation: popIn 0.3s ease-out;
+        }
+        .message.user {
+            background-color: #4CAF50; color: white;
+            align-self: flex-end; border-bottom-right-radius: 4px;
+        }
+        .message.bot {
+            background-color: #E8E8E8; color: #333;
+            align-self: flex-start; border-bottom-left-radius: 4px;
+        }
+         .message code {
+            background-color: #f1f1f1; color: #d32f2f;
+            padding: 2px 6px; border-radius: 4px;
+            font-family: monospace;
+        }
+        .message.bot.typing .dot {
+             width: 8px; height: 8px; margin: 0 2px;
+            background-color: #aaa; border-radius: 50%; display: inline-block;
+            animation: typing-bounce 1.2s infinite ease-in-out;
+        }
+        .message.bot.typing .dot:nth-child(2) { animation-delay: -1.0s; }
+        .message.bot.typing .dot:nth-child(3) { animation-delay: -0.8s; }
+        .chatbox-input-container {
+            display: flex; border-top: 1px solid #ddd;
+            padding: 10px; background-color: #f9f9f9;
+        }
+        .chatbox-input {
+            flex: 1; padding: 12px 15px; border: 1px solid #ccc;
+            border-radius: 25px; font-size: 1rem; outline: none; transition: border-color 0.3s;
+        }
+        .chatbox-input:focus { border-color: #4CAF50; }
+        .chatbox-send-button {
+            padding: 0 20px; margin-left: 10px; background-color: #4CAF50;
+            color: white; border: none; cursor: pointer; border-radius: 25px;
+            font-size: 1.2rem; transition: background-color 0.3s, transform 0.2s;
+        }
+        .chatbox-send-button:hover { background-color: #45a049; }
+        .chatbox-send-button:active { transform: scale(0.95); }
+        @keyframes fadeInScaleUp { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+        @keyframes popIn { from { opacity: 0; transform: scale(0.8) translateY(10px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+        @keyframes typing-bounce { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1.0); } }
+    </style>
+</head>
+<body>
+    <div class="chatbox">
+        <div class="chatbox-header">
+            <a href="./index.html" class="home-button"><i class="fas fa-arrow-left"></i></a>
+            Wheelaid AI Assistant
+        </div>
+        <div id="chatbox-messages" class="chatbox-messages"></div>
+        <div class="chatbox-input-container">
+            <input type="text" id="chatbox-input" class="chatbox-input" placeholder="Ask me anything..." onkeypress="handleKeyPress(event)">
+            <button class="chatbox-send-button" onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
+        </div>
+    </div>
+    <script>
+        const GEMINI_API_KEY = "INSERT_YOUR_GEMINI_API_KEY"; // IMPORTANT: PASTE YOUR KEY HERE
+        
+        const messagesContainer = document.getElementById('chatbox-messages');
+        const messageInput = document.getElementById('chatbox-input');
+        
+        const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${GEMINI_API_KEY}`;
+        const systemPrompt = "You are Wheelaid AI, a friendly and helpful assistant for the Wheelaid wheelchair assistance app. Your goal is to help users with questions about wheelchair accessibility, navigation, nearby facilities, and general support. Be concise, empathetic, and provide actionable information. If a user asks for something outside your scope, politely explain your purpose and guide them back to relevant topics.";
+
+        document.addEventListener('DOMContentLoaded', () => {
+             if (!GEMINI_API_KEY || GEMINI_API_KEY === 'INSERT_YOUR_GEMINI_API_KEY') {
+                appendMessage('bot', "Welcome! To enable the AI chat, please get a Gemini API key and add it to the <code>chat.html</code> file.");
+            } else {
+                appendMessage('bot', 'Welcome to Wheelaid! How can I assist you with your mobility needs today?');
+            }
+        });
+
+        function handleKeyPress(event) { if (event.key === 'Enter') sendMessage(); }
+
+        function sendMessage() {
+            const messageText = messageInput.value.trim();
+            if (messageText) {
+                appendMessage('user', messageText);
+                getGeminiResponse(messageText);
+                messageInput.value = '';
+            }
+        }
+
+        function appendMessage(sender, text) {
+            const messageElement = document.createElement('div');
+            messageElement.classList.add('message', sender);
+            messageElement.innerHTML = text;
+            messagesContainer.appendChild(messageElement);
+            scrollToBottom();
+        }
+        
+        function showTypingIndicator() {
+            const typingIndicator = `<div class="message bot typing" id="typing-indicator"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>`;
+            messagesContainer.insertAdjacentHTML('beforeend', typingIndicator);
+            scrollToBottom();
+        }
+
+        function removeTypingIndicator() {
+            const indicator = document.getElementById('typing-indicator');
+            if (indicator) indicator.remove();
+        }
+
+        async function getGeminiResponse(userQuery) {
+            if (!GEMINI_API_KEY || GEMINI_API_KEY === 'INSERT_YOUR_GEMINI_API_KEY') {
+                appendMessage('bot', "The AI is not configured. Please add a valid Gemini API key inside the <code>chat.html</code> file to continue.");
+                return;
+            }
+            showTypingIndicator();
+            const payload = {
+                contents: [{ parts: [{ text: userQuery }] }],
+                systemInstruction: { parts: [{ text: systemPrompt }] },
+            };
+            try {
+                const response = await fetch(GEMINI_API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                if (!response.ok) throw new Error(`API error: ${response.status} ${response.statusText}`);
+                const result = await response.json();
+                const botResponse = result.candidates?.[0]?.content?.parts?.[0]?.text;
+                removeTypingIndicator();
+                if (botResponse) {
+                    let formattedResponse = botResponse.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\*(.*?)\*/g, '<em>$1</em>').replace(/\n/g, '<br>');
+                    appendMessage('bot', formattedResponse);
+                } else {
+                    appendMessage('bot', "I'm sorry, I couldn't process that. Could you rephrase?");
+                }
+            } catch (error) {
+                console.error('Error fetching from Gemini API:', error);
+                removeTypingIndicator();
+                appendMessage('bot', "I'm having a little trouble connecting. Please check your API Key and try again in a moment.");
+            }
+        }
+        
+        function scrollToBottom() { messagesContainer.scrollTop = messagesContainer.scrollHeight; }
+    </script>
+</body>
+</html>
